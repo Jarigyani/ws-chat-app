@@ -1,0 +1,23 @@
+version: '3.9'
+services:
+  front:
+    image: node:latest
+    volumes:
+      - ./front:/app
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    tty: true
+    ports:
+      - 5173:5173
+    depends_on:
+      - back
+  back:
+    build:
+      context: .
+      dockerfile: back.Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - type: bind
+        source: ./back
+        target: /app
